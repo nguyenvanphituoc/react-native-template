@@ -18,6 +18,12 @@ export const alpha = {
   alpha_005: '0d',
 };
 
+export const iconSize = {
+  normal: 24,
+  small: 16,
+  large: 32,
+};
+
 export const depthLevel = {
   level_01: 40,
   level_02: 30,
@@ -25,7 +31,14 @@ export const depthLevel = {
   level_04: 10,
 };
 
-const DefaultTheme = {
+export interface ApplicationTheme {
+  colors: typeof lightColors;
+  iconSize: typeof iconSize;
+  alpha: typeof alpha;
+  depthLevel: typeof depthLevel;
+}
+
+export const LightTheme: ApplicationTheme & {[key in string]: any} = {
   roundness: 4,
   colors: lightColors,
   iconSize: {
@@ -36,5 +49,7 @@ const DefaultTheme = {
   depthLevel,
   alpha,
 };
+
+const DefaultTheme = LightTheme;
 
 export default DefaultTheme;

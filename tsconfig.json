@@ -13,9 +13,9 @@
       "@locales/*": [
         "locales/*"
       ],
-      // "@navigations/*": [
-      //   "navigations/*"
-      // ],
+      "@navigations/*": [
+        "navigations/*"
+      ],
       // "@redux/*": [
       //   "store/redux/*"
       // ],

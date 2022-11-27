@@ -7,6 +7,7 @@
     "color": "color"
   },
   "common": {
+    "welcome": "Hello Walter, Kyran, Luke and Shall. Welcome to the challenge!",
     "settingTitle": "Setting",
     "textComponentTitle": "Text Component"
   }
