@@ -1,0 +1,13 @@
+{
+  "action": {
+    "create": "create"
+  },
+  "properties": {
+    "backgroundColor": "background color",
+    "color": "color"
+  },
+  "common": {
+    "settingTitle": "Setting",
+    "textComponentTitle": "Text Component"
+  }
+}
