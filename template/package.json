@@ -6,6 +6,10 @@
     "publish": "npm publish --access public",
     "test": "exit 0"
   },
+  "files": [
+    "template",
+    "template.config.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nguyenvanphituoc/react-native-template.git"
