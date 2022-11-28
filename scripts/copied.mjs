@@ -48,9 +48,9 @@ async function copyDir(from, to, options = {}) {
             new RegExp(`^${to}${path.sep}`),
             ""
           );
-          if (/^\./.test(relativePath)) {
-            relativePath = relativePath.replace(/^\./, "_");
-          }
+          // if (/^\./.test(relativePath)) {
+          //   relativePath = relativePath.replace(/^\./, "_");
+          // }
           await FS.copy(item.path, path.join(to, relativePath));
           console.log(` ✅ ${relativePath}`);
         } else {
@@ -64,6 +64,6 @@ async function copyDir(from, to, options = {}) {
 }
 
 copyDir(
-  path.resolve(process.cwd(), "sample_project"),
+  path.resolve(process.cwd(), "ProjectName"),
   path.resolve(process.cwd(), "template/template")
 );
