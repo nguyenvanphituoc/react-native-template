@@ -3,12 +3,9 @@
   "version": "0.0.1",
   "description": "Clean and minimalist React Native template for a quick start with TypeScript.",
   "scripts": {
+    "publish": "npm publish --access public",
     "test": "exit 0"
   },
-  "files": [
-    "template",
-    "template.config.js"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nguyenvanphituoc/react-native-template.git"
