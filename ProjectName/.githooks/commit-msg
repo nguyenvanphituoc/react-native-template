@@ -1,0 +1,16 @@
+#!/bin/bash
+
+commit_msg_file=$1
+
+commit_msg=$(cat "$commit_msg_file")
+
+# Check if commit message matches Conventional Commits pattern
+if ! grep -qE '^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .+' "$commit_msg_file"; then
+    echo "Error: Commit message does not follow Conventional Commits format."
+    echo "Please use the format: <type>(<scope>): <description>"
+    echo "Example: feat(login): add validation for email field"
+    exit 1
+fi
+
+# Commit message is valid
+exit 0
