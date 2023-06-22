@@ -1,0 +1,60 @@
+#!/bin/sh
+# Load nvm if it is available
+if [ -s "$HOME/.nvm/nvm.sh" ]; then
+  source "$HOME/.nvm/nvm.sh"
+  # Switch to the Node.js version specified in .nvmrc
+  nvm use
+fi
+# Function to check file extension
+check_extension() {
+  file="$1"
+  valid_extensions=("ts" "tsx" "js" "jsx" "mjs" "json" "md" "xml" "yaml")
+  echo "check extension file: $file"
+  for extension in "${valid_extensions[@]}"; do
+    if [[ "${file##*.}" == "$extension" ]]; then
+      return 0  # Matched extension
+    fi
+  done
+
+  return 1  # Unmatched extension
+}
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+if [[ "$STAGED_FILES" = "" ]]; then
+  exit 0
+fi
+
+PASS=true
+
+echo "\nValidating these file with linter:\n"
+for FILE in $STAGED_FILES
+do
+
+  # Call the check_extension function for each file
+  check_extension "$FILE"
+  if [[ $? -eq 0 ]]; then
+    ./node_modules/.bin/eslint "$FILE" # --fix if you want to fix it
+    ESLINT_RESULT=$?
+    ./node_modules/.bin/prettier --ignore-unknown "$FILE" # --write if you want to fix it
+    PRETTIER_RESULT=$?
+
+    if [[ "$ESLINT_RESULT" == 0 && "$PRETTIER_RESULT" == 0 ]]; then
+      echo "\t\033[32mLinter Passed: $FILE\033[0m"
+    else
+      echo "\t\033[41mLinter Failed: $FILE\033[0m"
+      PASS=false
+    fi
+  fi
+done
+
+echo "\nJavascript validation completed!\n"
+
+if ! $PASS; then
+  echo "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass ESLint but do not. Please fix the ESLint errors and try again.\nTry using yarn lint:fix\n"
+  exit 1
+else
+  echo "\033[42mCOMMIT SUCCEEDED\033[0m\n"
+fi
+
+exit $?
