@@ -1,5 +1,5 @@
 {
-  "name": "@nguyenvanphituoc/react-native-template",
+  "name": "@nguyenvanphituoc/react-native-template-typescript",
   "version": "0.0.5",
   "description": "Clean and minimalist React Native template for a quick start with TypeScript.",
   "scripts": {
