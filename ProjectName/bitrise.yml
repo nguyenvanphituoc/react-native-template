@@ -1,0 +1,76 @@
+---
+format_version: '11'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: react-native
+app:
+  envs:
+  - FASTLANE_XCODE_LIST_TIMEOUT: '120'
+  - opts:
+      is_expand: false
+    FASTLANE_WORK_DIR: "."
+workflows:
+  primary:
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+    - script@1:
+        inputs:
+        - content: |
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
+
+            # write your script here
+            npx yarn install --yes
+            # or run a script from your repository, like:
+            # bash ./path/to/script.sh
+            # not just bash, e.g.:
+            # ruby ./path/to/script.rb
+        title: Project Setup
+    - file-downloader@1:
+        inputs:
+        - destination: "$BITRISE_SOURCE_DIR/android/app/<ProjectName_KEY_STORE>.keystore"
+        - source: "$BITRISEIO_android_key_URL"
+        title: File Downloader Android Key
+        run_if: '{{getenv "FASTLANE_PLATFORM" | eq "android"}}'
+    - file-downloader@1:
+        inputs:
+        - destination: "$BITRISE_SOURCE_DIR/fastlane/<ProjectName_API_KEY_STORE>.json"
+        - source: "$BITRISEIO_apple_key_URL"
+        title: File Downloader Apple Key
+        run_if: '{{getenv "FASTLANE_PLATFORM" | eq "ios"}}'
+    - fastlane@3:
+        title: fastlane sync iOS cer
+        run_if: '{{getenv "FASTLANE_PLATFORM" | eq "ios"}}'
+        inputs:
+        - lane: ios sync_cert --env $FASTLANE_BUILD_ENVIRONMENT
+    - fastlane@3:
+        inputs:
+        - lane: "$FASTLANE_PLATFORM $FASTLANE_BUILD_LANE --env $FASTLANE_BUILD_ENVIRONMENT"
+        - work_dir: "$FASTLANE_WORK_DIR"
+        - connection: 'off'
+        - verbose_log: 'yes'
+        - enable_cache: 'no'
+        title: fastlane trigger build
+    - slack@3:
+        is_always_run: true
+        run_if: ".IsBuildFailed"
+        inputs:
+        - channel_on_error: "<ProjectName_CHANNEL>"
+        - text_on_error: "$BITRISE_APP_TITLE build failed"
+        - emoji_on_error: ":siren_red:"
+        - from_username_on_error: "$BITRISE_APP_TITLE"
+        - title_on_error: "$FASTLANE_BUILD_LANE has been failed"
+        - message_on_error: "$BITRISE_BUILD_URL;$BITRISE_BUILD_NUMBER;$BITRISE_BUILD_TRIGGER_TIMESTAMP"
+        - timestamp: 'no'
+        - webhook_url: "$SLACK_WEB_HOOK"
+        - webhook_url_on_error: "$SLACK_WEB_HOOK"
+        title: Send a failed Slack message
+meta:
+  bitrise.io:
+    stack: osx-xcode-14.3.x-ventura
+    machine_type_id: g2.4core

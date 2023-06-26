@@ -1,0 +1,65 @@
+before_all do | options |
+  unless (ENV["MATCH_PASSWORD"])
+    UI.user_error! "Not define enough environment variable, please export these variables: [MATCH_PASSWORD]"
+    return
+  end
+
+  sh("pwd")
+  sh("./version.sh --version-code \"#{get_current_timestamp}\"")
+
+  newBuildNumber = get_build_number.to_i + 1
+  #Helper.log.info "Changed build number to #{new_build_identifier}".green
+
+
+  versionNumber = get_version_number
+  #newBuildNumber = new_build_identifier.to_i
+  get_version = `#{ENV["GET_VERSION"]}`
+
+  Actions.lane_context[SharedValues::VERSION_NUMBER]  = "#{versionNumber}"
+  Actions.lane_context[SharedValues::BUILD_NUMBER]    = "#{newBuildNumber}"
+
+  IPA_PATH = "build/#{ENV["APP_NAME"]}.ipa"
+  APK_PATH = "./android/app/build/outputs/apk/#{ENV["FLAVOR"]}/release/app-#{ENV["FLAVOR"]}-release.apk"
+  INFO = "#{ENV["APP_NAME"]} #{get_version}"
+
+  print("IPA_PATH #{IPA_PATH}")
+  print("APK_PATH #{APK_PATH}")
+  print("INFO #{INFO}")
+end
+
+lane :watch do
+  sh("watchbuild -a #{ENV["APP_ID"]} -u #{ENV["APPLE_USER_NAME"]}")
+end
+
+def get_build_number
+  # `/usr/libexec/PlistBuddy -c 'Print CFBundleVersion' ../#{ENV["APP_PLIST"]}`.strip
+  `cat ../package.json | grep versionCode | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'`.strip
+end
+
+def get_version_number
+  # `/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' ../#{ENV["APP_PLIST"]}`.strip
+  `cat ../package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'`.strip
+end
+
+def get_build_message
+  `cat ../package.json | grep message | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g'`.strip
+end
+
+def print(variable)
+  sh("echo #{variable}")
+end
+
+def set_build_number(build_number = nil)
+  raise if build_number.nil?
+
+  puts "Setting build number to #{build_number}"
+  Actions.lane_context[SharedValues::BUILD_NUMBER] = "#{build_number}"
+  sh("/usr/libexec/PlistBuddy -c 'Set CFBundleVersion #{build_number}' ../#{ENV["APP_PLIST"]}")
+end
+
+def get_current_timestamp
+  current_time = Time.now
+  timestamp_format = "%Y%m%d%H"  # Format: YYYYMMDDHHMM
+  formatted_timestamp = current_time.strftime(timestamp_format)
+  return formatted_timestamp
+end

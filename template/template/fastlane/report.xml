@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: pwd" time="0.003923">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: ./version.sh --version-code &quot;2023062017&quot;" time="0.088592">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: echo IPA_PATH build/Hammer.ipa" time="0.003747">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: echo APK_PATH ./android/app/build/outputs/apk/prod/release/app-prod-release.apk" time="0.002993">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: echo INFO Hammer 1.1.0 build 2023062017" time="0.003948">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: Switch to android update_config lane" time="0.000111">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: cd .. &amp;&amp; npx jetifier" time="3.8134">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: cd .. &amp;&amp; cd android &amp;&amp; ENVFILE=.env.production ./gradlew :app:bundleprodRelease --stacktrace" time="319.518341">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

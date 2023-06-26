@@ -1,0 +1,9 @@
+platform "ios"
+readonly    true #enable skip_certificate_matching if you import manually without checking Developer Portal
+verbose     true
+output_path     "./certs/#{ENV["GIT_CERT_BRANCH"]}"
+username 				ENV["APPLE_USER_NAME"]
+app_identifier          ENV["APP_ID"]
+git_url 				ENV["GIT_CERT_URL"]
+git_branch 				ENV["GIT_CERT_BRANCH"]
+team_id 				ENV["APPLE_TEAM_ID"]

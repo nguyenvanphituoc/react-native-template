@@ -1,0 +1,144 @@
+import "./BaseFastfile"
+
+release_notes_command = "git log HEAD --pretty=format:\"%s\" -1"
+
+# lane :deploy_both do
+#   ios_build_script = "bundle exec fastlane ios deploy buildVersion:#{ENV['BUILD_NUMBER']}"
+#   android_build_script = "bundle exec fastlane android deploy buildVersion:#{ENV['BUILD_NUMBER']}"
+#   sh(ios_build_script)
+#   sh(android_build_script)
+# end
+
+### IOS
+platform :ios do
+
+  desc "generate app"
+  desc "=> fastlane generate_app --env <>"
+  lane :generate_app do
+    create_app_online(
+      username:       ENV["APPLE_USER_NAME"],
+      app_identifier: ENV["APP_ID"],
+      app_name:       ENV["APP_NAME"],
+      team_id:        ENV["APPLE_TEAM_ID"],
+      language:       "en-US",
+      app_version:    "1.0",
+      skip_devcenter: false,
+      skip_itc:       false
+    )
+  end
+
+  lane :sync_cert do
+    match(type: "development")
+    # match(type: "adhoc")
+    match(type: "appstore")
+  end
+
+  lane :build do | options |
+    # using auto set build by script
+    # newBuildNumber = lane_context[SharedValues::BUILD_NUMBER]
+    # set_build_number(newBuildNumber)
+
+    gym(
+      silent:           true,
+      clean:            options[:release],
+      output_directory: "build",
+      output_name:      "#{ENV["APP_NAME"]}.ipa",
+      # project:          ENV["XCODEPROJ"],   # Carthage
+      workspace:        ENV["WORKSPACE"],   # Pods
+      export_method:    ENV["EXPORT_METHOD"],
+      scheme:           ENV["SCHEME"],
+      configuration:    ENV["CONFIGURATION"], # provision profiles & macro
+      include_symbols: true,
+      include_bitcode: false,
+      export_options: {iCloudContainerEnvironment: 'Development'}, # or 'Production'
+    )
+  end
+
+  desc "Deploy to TestFlight"
+  desc "=> fastlane deploy_appstore"
+  lane :deploy_appstore do | options |
+
+    buildMessage = get_build_message
+    if options[:message]
+      buildMessage = options[:message]
+    end
+    # Deploy to TestFlight
+    pilot(
+      api_key_path:   ENV["APPSTORE_API_KEY_PATH"],
+      app_platform:   "ios",
+      app_identifier: ENV["APP_ID"],
+      apple_id:       ENV["APP_CONNECT_ID"],
+      ipa:            "#{IPA_PATH}",
+      team_id:        ENV["APPLE_TEAM_ID"],
+      changelog: buildMessage
+    )
+    #  hi <@U0377NU84FK> <@U03JWL5DZ5F>, 
+    msg = "*#{INFO}* has been deployed to TestFlight by account: #{ENV["APPLE_USER_NAME"]} with #{buildMessage}, hi <@U0377NU84FK> <@U03JWL5DZ5F>, Please help me test the iOS build :smile:."
+    noti_slack({message: msg})
+  end
+
+  lane  :delivery_ipa do | options |
+    build(options)
+    deploy_appstore(options)
+  end
+end
+
+###  ANDROID
+platform :android do
+  lane :update_config do
+    sh("cd .. && npx jetifier")
+  end
+
+  lane :delivery_apk do | options |
+    update_config
+    sh("cd .. && cd android && ENVFILE=#{ENV["ENV_FILE"]} ./gradlew assemble#{ENV["FLAVOR"]}Release --stacktrace")
+    deploy_firebase(options)
+  end
+
+  lane :build_aab do | options |
+  	update_config
+    sh("cd .. && cd android && ENVFILE=#{ENV["ENV_FILE"]} ./gradlew :app:bundle#{ENV["FLAVOR"]}Release --stacktrace")
+    # deploy_firebase(
+    #   message: get_build_message
+    # )
+  end
+
+  lane :deploy_firebase do | options |
+      buildMessage = get_build_message
+      # buildMessage = get_current_timestamp
+      # sh("echo \"Build message: #{buildMessage}\"")
+      refLink = ENV["FIREBASE_INVITE"]
+      firebase_cli_token = ENV["FIREBASE_CLI_TOKEN"]
+      if options[:message]
+        buildMessage = options[:message]
+      end
+
+      # deploy app to firebase
+      firebase_app_distribution(
+          app: ENV["FIREBASE_APP_ANDROID_ID"],
+          firebase_cli_token: firebase_cli_token,
+          apk_path: "#{APK_PATH}",
+          groups: "vinova",
+          release_notes: buildMessage,
+      )
+
+      firebase_app_distribution_get_latest_release(
+        app: ENV["FIREBASE_APP_ANDROID_ID"],
+        firebase_cli_token: firebase_cli_token,
+      )
+
+      releaseBaseUrl = "https://appdistribution.firebase.google.com/tester"
+      releaseLasted = Actions.lane_context[:FIREBASE_APP_DISTRO_LATEST_RELEASE][:testingUri]
+      #  hi <@U0377NU84FK> <@U03JWL5DZ5F>, 
+      msg = "*#{INFO}* has been deployed; _<#{releaseLasted}| Install link>_.\n_<#{refLink}|Firebase invite vinovator link>_ with #{buildMessage}. Hi QC team, please help me test the android build :smile:."
+      noti_slack({message: msg})
+  end
+end
+
+private_lane :noti_slack do | options |
+  msg = options[:message]
+  slack(
+    message: msg,
+    default_payloads: [:git_branch, :last_git_commit_message]
+  )  
+end

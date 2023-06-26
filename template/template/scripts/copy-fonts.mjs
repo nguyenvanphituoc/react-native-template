@@ -83,10 +83,6 @@ targetUUIDs.forEach(targetUUID => {
   const resourcesBuildPhase = project.pbxResourcesBuildPhaseObj(targetUUID);
   const relativePath = path.relative('src', PROJECT_PATH);
 
-  console.log(
-    'const relativePath = path.relative(resourcesGroupPath, FONT_DEST_FOLDER)  ',
-    relativePath,
-  );
   // Add the font files to the Copy Bundle Resources build phase for the target
   FONT_SOURCES.forEach(fontSourcePath => {
     const fontFileName = path.basename(fontSourcePath);

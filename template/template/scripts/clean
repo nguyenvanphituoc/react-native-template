@@ -1,0 +1,53 @@
+# Task 5: hard clean: remove .lock file if it exists that trigger by --hard flag as boolean
+if [ "$1" = "--hard" ]; then
+  echo "Running hard clean..."
+  rm package-lock.json
+  rm yarn.lock
+  rm ios/Podfile.lock
+  # remove gem lock
+  rm -rf vendor
+  rm Gemfile.lock
+  echo "Task 3 completed."
+else
+  echo "Skipping hard clean as it is only required for --hard flag."
+fi
+
+#!/bin/bash
+# Task 3: clean android
+echo "Running clean android..."
+cd android && ./gradlew clean
+cd ..
+echo "Task 4 completed."
+
+# Task 4: clean android build folder
+echo "Running clean android build folder..."
+rm -rf android/app/build
+rm -rf android/build
+rm -rf build
+echo "Task 5 completed."
+
+# Task 2: run pod deintegrate for react-native
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "Running pod deintegrate..."
+  cd ios && pod deintegrate && cd ..
+  echo "Task 2 completed."
+else
+  echo "Skipping pod deintegrate as it is only required for macOS."
+fi
+
+# Task 1: run remove node_modules folder
+echo "Running remove node_modules folder..."
+rm -rf node_modules
+echo "Task 1 completed."
+# Task 3: clear watchman if it drawin OS and if which watchman have value
+# if [[ "$OSTYPE" == "darwin"* ]]; then
+#   if which watchman >/dev/null; then
+#     echo "Running watchman watch-del-all..."
+#     watchman watch-del-all
+#     echo "Task 3 completed."
+#   else
+#     echo "Skipping watchman watch-del-all as it is not installed."
+#   fi
+# else
+#   echo "Skipping watchman watch-del-all as it is only required for macOS."
+# fi
