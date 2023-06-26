@@ -1,3 +1,4 @@
+#!/bin/bash
 # Task 5: hard clean: remove .lock file if it exists that trigger by --hard flag as boolean
 if [ "$1" = "--hard" ]; then
   echo "Running hard clean..."
@@ -12,12 +13,16 @@ else
   echo "Skipping hard clean as it is only required for --hard flag."
 fi
 
-#!/bin/bash
 # Task 3: clean android
 echo "Running clean android..."
 cd android && ./gradlew clean
 cd ..
 echo "Task 4 completed."
+
+# Task: remove android .gradle
+echo "Running remove android .gradle..."
+rm -rf android/.gradle
+echo "Task 6 completed."
 
 # Task 4: clean android build folder
 echo "Running clean android build folder..."
@@ -30,6 +35,7 @@ echo "Task 5 completed."
 if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "Running pod deintegrate..."
   cd ios && pod deintegrate && cd ..
+  rm -rf ios/build
   echo "Task 2 completed."
 else
   echo "Skipping pod deintegrate as it is only required for macOS."

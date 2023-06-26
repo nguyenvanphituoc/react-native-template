@@ -1,4 +1,4 @@
-#!/usr/bash
+#!/bin/bash
 echo "Hello World"
 # I need to convert back directory _githooks to .githooks
 # because .gitignore doesn't allow to add .githooks directory
