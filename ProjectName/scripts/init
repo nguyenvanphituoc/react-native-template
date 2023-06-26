@@ -25,4 +25,3 @@ cp -r _node-version .node-version
 rm -rf _node-version
 
 #
-npx yarn install --yes
