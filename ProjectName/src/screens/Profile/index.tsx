@@ -1,7 +1,7 @@
 import React from 'react';
 
 import i18n from '@locales/index';
-import Text from '@views/Text/TextBase';
+import Text from '@views/Text';
 import {StyledView} from '@views/View';
 
 function ProfileScreen() {
@@ -12,21 +12,21 @@ function ProfileScreen() {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text>
+      <Text.RegularText>
         {i18n.t('common.title', {
-          byMe: <Text>@nguyenvanphituoc</Text>,
+          byMe: <Text.RegularText>@nguyenvanphituoc</Text.RegularText>,
         })}
-      </Text>
-      <Text>
+      </Text.RegularText>
+      <Text.RegularText>
         {i18n.t('common.title', {
           byMe: 'React-Native',
         })}
-      </Text>
-      <Text>
+      </Text.RegularText>
+      <Text.RegularText>
         {i18n.t('common.title', {
-          byMe: () => <Text>typescript</Text>,
+          byMe: () => <Text.RegularText>typescript</Text.RegularText>,
         })}
-      </Text>
+      </Text.RegularText>
     </StyledView>
   );
 }

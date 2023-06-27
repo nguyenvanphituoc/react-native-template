@@ -11,7 +11,7 @@
     "start": "react-native start",
     "test": "jest",
     "localization": "node scripts/locale/generate-language.mjs",
-    "copy-fonts": "node scripts/copy-fonts.mjs",
+    "copy-fonts": "node scripts/font/copy-fonts.mjs",
     "clean": "./scripts/clean"
   },
   "dependencies": {

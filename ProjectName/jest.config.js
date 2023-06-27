@@ -26,7 +26,7 @@ module.exports = {
   transformIgnorePatterns: [
     // 'node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation)',
     // SyntaxError: Cannot use import statement outside a module
-    'node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation|react-native-vector-icons|native-base|react-native-otp-input.*)',
+    'node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation|react-native-vector-icons|native-base|react-native-otp-input|i18n-js.*)',
   ],
   cacheDirectory: '.jest/cache',
   verbose: true,

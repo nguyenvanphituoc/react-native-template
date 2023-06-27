@@ -1,3 +1,4 @@
+import {MAPPING_FONT_FAMILY} from '@assets/fonts/constant';
 // pallete
 export const lightColors = {
   black: '#000000',
@@ -32,6 +33,7 @@ const DefaultTheme = {
     small: 16,
     large: 32,
   },
+  fonts: MAPPING_FONT_FAMILY,
   depthLevel,
   alpha,
 };
