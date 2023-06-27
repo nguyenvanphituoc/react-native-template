@@ -13,7 +13,7 @@ interface Props {
   outline?: boolean;
   textStyle?: TextStyle;
   style?: TouchableOpacityProps['style'];
-  onPress?: any;
+  onPress?: TouchableOpacityProps['onPress'];
   isShadow?: boolean;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
@@ -63,7 +63,8 @@ const PrimaryButton = styled.TouchableOpacity<{
   justify-content: center;
   padding-horizontal: 8px;
   border-radius: 6px;
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  opacity: ${props =>
+    props.disabled ? props.theme.alpha.alpha_05 : props.theme.alpha.alpha_10};
   height: ${props => (props?.height ? props?.height + 'px' : 'auto')};
   flex-direction: row;
 `;

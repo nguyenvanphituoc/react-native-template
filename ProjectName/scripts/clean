@@ -45,6 +45,10 @@ fi
 echo "Running remove node_modules folder..."
 rm -rf node_modules
 echo "Task 1 completed."
+
+# Task: clean jest cache
+echo "Running clean jest cache..."
+rm -rf .jest
 # Task 3: clear watchman if it drawin OS and if which watchman have value
 # if [[ "$OSTYPE" == "darwin"* ]]; then
 #   if which watchman >/dev/null; then

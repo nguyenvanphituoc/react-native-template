@@ -8,7 +8,7 @@
       "@hooks/*": ["hooks/*"],
       "@locales/*": ["locales/*"],
       "@model/*": ["model/*"],
-      "@navigations/*": ["navigations/*"],
+      "@navigation/*": ["navigation/*"],
       "@redux/*": ["store/redux/*"],
       "@screens/*": ["screens/*"],
       "@services/*": ["services/*"],
