@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "preinstall": "./scripts/preinstall",
     "postinstall": "./scripts/postinstall",
     "android": "react-native run-android",
     "ios": "react-native run-ios",

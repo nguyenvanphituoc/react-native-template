@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# check if init script exist then run it
+# code below:
+pwd
+if [ -f scripts/init ]; then
+  echo "Running init script..."
+  scripts/init
+  # then remove this file
+  rm scripts/init
+  echo "Init script completed."
+else
+  echo "Skipping init script as it is not exist."
+fi
