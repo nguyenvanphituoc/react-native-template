@@ -1,54 +1,28 @@
 #!/bin/bash
-# I need to convert back directory _githooks to .githooks
-# because .gitignore doesn't allow to add .githooks directory
+# Define an array of directories to convert
+directories=("_githooks" "_gitignore" "_bundle" "_eslintignore" "_eslintrc.js" "_prettierrc.js" "_node-version" "_gitlab-ci.yml" "_watchmanconfig")
 
-# step 1: copy all files from _githooks to .githooks
-# step 2: delete _githooks directory
-# code below:
-cp -r _githooks/. .githooks
-rm -rf _githooks
+# Loop through each directory and convert it
+for dir in "${directories[@]}"; do
+  # Check if the directory exists
+  if [ -f "$dir" ]; then
+    # Copy all files from the underscored directory to the period directory
+    cp -r "$dir" ".${dir/_/}"
 
-# _gitignore to .gitignore
-# code below:
-cp -r _gitignore .gitignore
-rm -rf _gitignore
+    # Delete the underscored directory
+    rm -rf "$dir"
+  elif [ -d "$dir" ]; then
+    # Copy all files from the underscored directory to the period directory
+    cp -r "$dir/." ".${dir/_/}"
 
-# _bundleconfig to .bundleconfig
-# code below:
-cp -r _bundleconfig .bundleconfig
-rm -rf _bundleconfig
-
-# _eslintignore to .eslintignore
-# code below:
-cp -r _eslintignore .eslintignore
-rm -rf _eslintignore
-
-# _eslintrc.js to .eslintrc.js
-# code below:
-cp -r _eslintrc.js .eslintrc.js
-rm -rf _eslintrc.js
-
-# _prettierrc.js to .prettierrc.js
-# code below:
-cp -r _prettierrc.js .prettierrc.js
-rm -rf _prettierrc.js
-
-# _node-version to .node-version
-# code below:
-cp -r _node-version .node-version
-rm -rf _node-version
-
-# .gitlab-ci.yml to .gitlab-ci.yml
-# code below:
-cp -r _gitlab-ci.yml .gitlab-ci.yml
-rm -rf _gitlab-ci.yml
-
-# _watchmanconfig to .watchmanconfig
-# code below:
-cp -r _watchmanconfig .watchmanconfig
-rm -rf _watchmanconfig
+    # Delete the underscored directory
+    rm -rf "$dir"
+  fi
+done
 
 # ios/_xcode_env to ios/.xcode_env
 # code below:
-cp -r ios/_xcode_env ios/.xcode_env
-rm -rf ios/_xcode_env
+if [ -f "ios/_xcode_env" ]; then
+  cp -r ios/_xcode_env ios/.xcode_env
+  rm -rf ios/_xcode_env
+fi
