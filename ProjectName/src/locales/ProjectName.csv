@@ -1,2 +1,3 @@
 module,en
-"common.welcome","hello world"
+"common.welcome","Welcome to project ProjectName"
+"common.title","This codebase boilerplate: {{byMe}}"
