@@ -25,12 +25,12 @@ yarn localization
 echo "Task 3 completed."
 
 # Task 4: Run git hook (only for macOS)
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  echo "Running git hook pre commit"
-  git config core.hooksPath .githooks
-  echo "Task 4 completed."
-else
-  echo "Skipping git hook pre commit as it is only required for macOS."
-fi
+# if [[ "$OSTYPE" == "darwin"* ]]; then
+#   echo "Running git hook pre commit"
+#   git config core.hooksPath .githooks
+#   echo "Task 4 completed."
+# else
+#   echo "Skipping git hook pre commit as it is only required for macOS."
+# fi
 
 echo "All tasks completed successfully."

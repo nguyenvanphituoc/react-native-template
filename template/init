@@ -1,6 +1,6 @@
 #!/bin/bash
 # Define an array of directories to convert
-directories=("_githooks" "_gitignore" "_bundle" "_eslintignore" "_eslintrc.js" "_prettierrc.js" "_node-version" "_gitlab-ci.yml" "_watchmanconfig")
+directories=("_githooks" "_gitignore" "_bundle" "_eslintignore" "_eslintrc.js" "_prettierrc.js" "_node-version" "_gitlab-ci.yml" "_watchmanconfig" "_husky")
 
 # Loop through each directory and convert it
 for dir in "${directories[@]}"; do
