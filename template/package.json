@@ -1,9 +1,8 @@
 {
   "name": "@nguyenvanphituoc/react-native-template-typescript",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "Clean and minimalist React Native template for a quick start with TypeScript.",
   "scripts": {
-    "publish": "npm publish --access public",
     "release": "release-it",
     "test": "exit 0"
   },
