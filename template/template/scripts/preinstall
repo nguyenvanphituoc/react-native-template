@@ -5,13 +5,6 @@
 
 # setup environment
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  # rbenv setup
-  if which rbenv > /dev/null; then 
-    eval "$(rbenv init -)"; 
-    rbenv install
-  else
-    echo "rbenv not found"
-  fi
 
   # check ruby version
   # by get ruby version and matching with .ruby-version
@@ -22,8 +15,15 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     if [[ $ruby_version == $expected_version* ]]; then
       echo "Validation passed: ruby_version starts with the content of .ruby-version"
     else 
-      echo "Ruby version mismatch. Expected $expected_version but found $ruby_version"
-      exit 1
+      # rbenv setup
+      if which rbenv > /dev/null; then 
+        eval "$(rbenv init -)"; 
+        rbenv install
+      else
+        #
+        echo "Ruby version mismatch. Expected $expected_version but found $ruby_version"
+        exit 1
+      fi
     fi
   fi
   

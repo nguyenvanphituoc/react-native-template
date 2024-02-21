@@ -7,7 +7,6 @@
     "postinstall": "./scripts/postinstall",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "lint": "./scripts/lint",
     "start": "react-native start",
     "test": "jest",
     "localization": "node scripts/locale/generate-language.mjs",
