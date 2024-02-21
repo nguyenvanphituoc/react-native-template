@@ -1,5 +1,0 @@
-curl -X POST "https://api.bitrise.io/v0.1/apps/<ProjectName_APP_SLUG>/builds" \
-  -H "accept: application/json" \
-  -H "Authorization: <BITRISE_PERSONAL_TOKEN>" \
-  -H "Content-Type: application/json" \
-  -d "{ \"build_params\": { \"branch\": \"ProjectName_BRANCH\", \"commit_message\": \"string\", \"environments\": [ { \"is_expand\": true, \"mapped_to\": \"FASTLANE_PLATFORM\", \"value\": \"android\" }, { \"is_expand\": true, \"mapped_to\": \"FASTLANE_BUILD_LANE\", \"value\": \"delivery_apk\" }, { \"is_expand\": true, \"mapped_to\": \"FASTLANE_BUILD_ENVIRONMENT\", \"value\": \"vinova\" }, { \"is_expand\": true, \"mapped_to\": \"SLACK_WEB_HOOK\", \"value\": \"<ProjectName_SLACK_WEB_HOOK>\" } ], \"workflow_id\": \"primary\" }, \"hook_info\": { \"type\": \"bitrise\" }}"

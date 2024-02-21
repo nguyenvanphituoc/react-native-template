@@ -26,3 +26,5 @@ if [ -f "ios/_xcode_env" ]; then
   cp -r ios/_xcode_env ios/.xcode_env
   rm -rf ios/_xcode_env
 fi
+
+echo "Init script completed"

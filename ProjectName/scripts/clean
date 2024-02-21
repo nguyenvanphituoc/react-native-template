@@ -45,6 +45,7 @@ fi
 echo "Running remove node_modules folder..."
 rm -rf node_modules
 rm -rf vendor
+rm -rf $TMPDIR/react-*
 echo "Task 1 completed."
 
 # Task: clean jest cache

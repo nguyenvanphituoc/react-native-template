@@ -65,6 +65,7 @@ yarn-error.log
 # scripts report
 scripts/*.txt
 **/localization
+**/fonts/constant.ts
 /android/app/src/main/assets/fonts
 
 # Jest

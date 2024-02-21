@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
 
 # You may use http://rbenv.org/ or https://rvm.io/ to install and use this version
-ruby '>= 2.6.10'
-
-gem 'cocoapods', '>= 1.11.3'
-
-gem "fastlane"
+ruby '>= 3.0.0'
+# https://github.com/facebook/react-native/issues/42698#issuecomment-1913791727
+gem 'cocoapods', '1.14'
+# https://github.com/fastlane/fastlane/issues/20960#issuecomment-1413333159
+# https://github.com/fastlane/fastlane/pull/21442
+gem "fastlane", "= 2.210.1"
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
 eval_gemfile(plugins_path) if File.exist?(plugins_path)
