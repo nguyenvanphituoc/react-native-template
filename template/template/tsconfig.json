@@ -1,6 +1,9 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
+    "lib": [
+      "es2017"
+    ] /* Specify library files to be included in the compilation. */,
     "baseUrl": "./src/" /* Base directory to resolve non-absolute module names. */,
     "paths": {
       "@assets/*": ["assets/*"],

@@ -6,7 +6,6 @@ if [ "$1" = "--hard" ]; then
   rm yarn.lock
   rm ios/Podfile.lock
   # remove gem lock
-  rm -rf vendor
   rm Gemfile.lock
   echo "Task 3 completed."
 else
@@ -29,6 +28,7 @@ echo "Running clean android build folder..."
 rm -rf android/app/build
 rm -rf android/build
 rm -rf build
+rm -rf android/app/src/main/assets/fonts
 echo "Task 5 completed."
 
 # Task 2: run pod deintegrate for react-native
@@ -44,11 +44,14 @@ fi
 # Task 1: run remove node_modules folder
 echo "Running remove node_modules folder..."
 rm -rf node_modules
+rm -rf vendor
+rm -rf $TMPDIR/react-*
 echo "Task 1 completed."
 
 # Task: clean jest cache
 echo "Running clean jest cache..."
 rm -rf .jest
+rm -rf coverage
 # Task 3: clear watchman if it drawin OS and if which watchman have value
 # if [[ "$OSTYPE" == "darwin"* ]]; then
 #   if which watchman >/dev/null; then

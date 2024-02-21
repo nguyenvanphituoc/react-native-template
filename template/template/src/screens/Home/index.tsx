@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Text from '@views/Text/TextBase';
+import Text from '@views/Text';
 import {StyledView} from '@views/View';
 function HomeScreen() {
   return (
@@ -10,7 +10,7 @@ function HomeScreen() {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text>Home Screen</Text>
+      <Text.RegularText>Home Screen</Text.RegularText>
     </StyledView>
   );
 }

@@ -2,13 +2,44 @@
 
 # check if init script exist then run it
 # code below:
-pwd
-if [ -f scripts/init ]; then
-  echo "Running init script..."
-  scripts/init
-  # then remove this file
-  rm scripts/init
-  echo "Init script completed."
+
+# setup environment
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # rbenv setup
+  if which rbenv > /dev/null; then 
+    eval "$(rbenv init -)"; 
+    rbenv install
+  else
+    echo "rbenv not found"
+  fi
+
+  # check ruby version
+  # by get ruby version and matching with .ruby-version
+  ruby_version=$(ruby -v | awk '{print $2}')
+  if [ -s ".ruby-version" ]; then
+    expected_version=$(cat .ruby-version)
+
+    if [[ $ruby_version == $expected_version* ]]; then
+      echo "Validation passed: ruby_version starts with the content of .ruby-version"
+    else 
+      echo "Ruby version mismatch. Expected $expected_version but found $ruby_version"
+      exit 1
+    fi
+  fi
+  
+  # load bundle and setup cocoapod, firebase
+  gem install bundler
+  bundle check || bundle install
+
+  # Load nvm if it is available
+  if [ -s "$HOME/.nvm/nvm.sh" ]; then
+    source "$HOME/.nvm/nvm.sh"
+    # Switch to the Node.js version specified in .nvmrc
+    # check .nvmrc exists
+    if [ -s ".nvmrc" ]; then
+      nvm use
+    fi
+  fi
 else
-  echo "Skipping init script as it is not exist."
+  echo "Skipping npx pod-install as it is only required for macOS."
 fi

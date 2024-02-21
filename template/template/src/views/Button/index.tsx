@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useGlobalStyles from '@theme/useTheme';
-import Text from '@views/Text/TextBase';
+import Text from '@views/Text';
 import {TouchableOpacityProps, TextStyle} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 
@@ -69,7 +69,7 @@ const PrimaryButton = styled.TouchableOpacity<{
   flex-direction: row;
 `;
 
-const PrimaryText = styled(Text)`
+const PrimaryText = styled(Text.RegularText)`
   text-align: center;
 `;
 

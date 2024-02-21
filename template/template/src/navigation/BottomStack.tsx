@@ -3,7 +3,7 @@ import React, {useCallback} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '@screens/Home';
 import ProfileScreen from '@screens/Profile';
-import Text from '@views/Text/TextBase';
+import Text from '@views/Text';
 import {Platform, ViewStyle} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 
@@ -53,7 +53,7 @@ function BottomTabStack() {
   );
 }
 
-const TabTitle = styled(Text)`
+const TabTitle = styled(Text.RegularText)`
   font-size: 14px;
 `;
 
