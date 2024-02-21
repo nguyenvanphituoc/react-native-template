@@ -4,6 +4,7 @@
   "description": "Clean and minimalist React Native template for a quick start with TypeScript.",
   "scripts": {
     "publish": "npm publish --access public",
+    "release": "release-it",
     "test": "exit 0"
   },
   "files": [
@@ -26,5 +27,31 @@
   "bugs": {
     "url": "https://github.com/nguyenvanphituoc/react-native-template/issues"
   },
-  "homepage": "https://github.com/nguyenvanphituoc/react-native-template"
+  "homepage": "https://github.com/nguyenvanphituoc/react-native-template",
+  "dependencies": {
+    "release-it": "^17.1.1"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^8.0.1"
+  }
 }
