@@ -20,8 +20,8 @@ yarn copy-fonts
 echo "Task 3 completed."
 
 # Task 3: Run yarn copy-language
-echo "Running yarn localization..."
-yarn localization
+echo "Running yarn locale..."
+yarn locale
 echo "Task 3 completed."
 
 # Task 4: Run git hook (only for macOS)
