@@ -4,19 +4,8 @@ before_all do | options |
     return
   end
 
-  sh("pwd")
-  sh("./version.sh --version-code \"#{get_current_timestamp}\"")
-
-  newBuildNumber = get_build_number.to_i + 1
-  #Helper.log.info "Changed build number to #{new_build_identifier}".green
-
-
-  versionNumber = get_version_number
-  #newBuildNumber = new_build_identifier.to_i
-  get_version = `#{ENV["GET_VERSION"]}`
-
-  Actions.lane_context[SharedValues::VERSION_NUMBER]  = "#{versionNumber}"
-  Actions.lane_context[SharedValues::BUILD_NUMBER]    = "#{newBuildNumber}"
+  # set version for iOS
+  sh("./version.ios.sh --version-code \"#{get_current_timestamp}\"")
 
   IPA_PATH = "build/#{ENV["APP_NAME"]}.ipa"
   APK_PATH = "./android/app/build/outputs/apk/#{ENV["FLAVOR"]}/release/app-#{ENV["FLAVOR"]}-release.apk"
@@ -29,16 +18,6 @@ end
 
 lane :watch do
   sh("watchbuild -a #{ENV["APP_ID"]} -u #{ENV["APPLE_USER_NAME"]}")
-end
-
-def get_build_number
-  # `/usr/libexec/PlistBuddy -c 'Print CFBundleVersion' ../#{ENV["APP_PLIST"]}`.strip
-  `cat ../package.json | grep versionCode | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'`.strip
-end
-
-def get_version_number
-  # `/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' ../#{ENV["APP_PLIST"]}`.strip
-  `cat ../package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'`.strip
 end
 
 def get_build_message

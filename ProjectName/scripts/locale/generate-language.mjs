@@ -3,7 +3,7 @@ import csv from 'csv-parser';
 import path from 'path';
 
 const languageDir = path.resolve(process.cwd(), 'src/locales');
-const languageCSV = path.join(languageDir, 'ProjectName.csv');
+const languageCSV = path.join(languageDir, 'language.csv');
 const results = [];
 
 fs.mkdirSync(path.join(languageDir, 'localization'), {

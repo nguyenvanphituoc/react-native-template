@@ -9,7 +9,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "localization": "node scripts/locale/generate-language.mjs",
+    "locale": "node scripts/locale/generate-language.mjs",
     "copy-fonts": "node scripts/font/copy-fonts.mjs",
     "clean": "./scripts/clean",
     "prepare": "husky"
