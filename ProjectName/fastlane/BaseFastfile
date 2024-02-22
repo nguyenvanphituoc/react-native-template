@@ -6,6 +6,7 @@ before_all do | options |
 
   # set version for iOS
   sh("./version.ios.sh --version-code \"#{get_current_timestamp}\"")
+  get_version = `#{ENV["GET_VERSION"]}`
 
   IPA_PATH = "build/#{ENV["APP_NAME"]}.ipa"
   APK_PATH = "./android/app/build/outputs/apk/#{ENV["FLAVOR"]}/release/app-#{ENV["FLAVOR"]}-release.apk"

@@ -68,6 +68,9 @@ scripts/*.txt
 **/fonts/constant.ts
 /android/app/src/main/assets/fonts
 
+#
+**/certs
+
 # Jest
 #
 .jest/
