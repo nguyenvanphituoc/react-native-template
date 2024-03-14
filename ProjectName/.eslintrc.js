@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@react-native-community', 'prettier'],
+  extends: ['@react-native', 'prettier'],
   overrides: [
     {
       files: ['*.ts', '*.tsx', '*.js', '*.jsx'],

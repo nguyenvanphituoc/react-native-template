@@ -23,7 +23,13 @@ platform :ios do
       language:       "en-US",
       app_version:    "1.0",
       skip_devcenter: false,
-      skip_itc:       false
+      skip_itc:       false,
+      itc_team_id: ENV["APP_IC_CONNECT_ID"],
+      enable_services: {
+        associated_domains: "on", 
+        push_notification: "on",
+        in_app_purchase: "on",
+      }
     )
   end
 
@@ -50,7 +56,12 @@ platform :ios do
       configuration:    ENV["CONFIGURATION"], # provision profiles & macro
       include_symbols: true,
       include_bitcode: false,
-      export_options: {iCloudContainerEnvironment: 'Development'}, # or 'Production'
+      export_options: {
+        iCloudContainerEnvironment: 'Development', 
+        provisioningProfiles: {
+          ENV["APP_ID"] => ENV["SIGH_PROFILE_NAME"]
+        }
+      }, # or 'Production'
     )
   end
 
@@ -62,18 +73,30 @@ platform :ios do
     if options[:message]
       buildMessage = options[:message]
     end
+    # Validation Testflight api_key
+    # load the appstore api_key
+    pilot_api_key_path = ENV["APPSTORE_API_KEY_PATH"]
+    # Get the last part of the path
+    pilot_api_key_last_part = File.basename(pilot_api_key_path)
+    # Check if the file exists
+    if File.exist?(pilot_api_key_path) || File.exist?("./#{pilot_api_key_last_part}")
+      UI.message("App Store Connect API key provided")
+    else
+      UI.message("No App Store Connect API key provided, please set APPSTORE_API_KEY_PATH")
+      next
+    end
     # Deploy to TestFlight
     pilot(
       api_key_path:   ENV["APPSTORE_API_KEY_PATH"],
       app_platform:   "ios",
       app_identifier: ENV["APP_ID"],
-      apple_id:       ENV["APP_CONNECT_ID"],
+      apple_id:       ENV["APP_STORE_ID"],
       ipa:            "#{IPA_PATH}",
       team_id:        ENV["APPLE_TEAM_ID"],
       changelog: buildMessage
     )
     #  hi <@U0377NU84FK> <@U03JWL5DZ5F>, 
-    msg = "*#{INFO}* has been deployed to TestFlight by account: #{ENV["APPLE_USER_NAME"]} with #{buildMessage}, hi <@U0377NU84FK> <@U03JWL5DZ5F>, Please help me test the iOS build :smile:."
+    msg = "*#{INFO}* has been deployed to TestFlight by account: #{ENV["APPLE_USER_NAME"]} with \n```#{buildMessage}```\nHi , Please help me test the iOS build :smile:."
     noti_slack({message: msg})
   end
 
@@ -130,7 +153,7 @@ platform :android do
       releaseBaseUrl = "https://appdistribution.firebase.google.com/tester"
       releaseLasted = Actions.lane_context[:FIREBASE_APP_DISTRO_LATEST_RELEASE][:testingUri]
       #  hi <@U0377NU84FK> <@U03JWL5DZ5F>, 
-      msg = "*#{INFO}* has been deployed; _<#{releaseLasted}| Install link>_.\n_<#{refLink}|Firebase invite vinovator link>_ with #{buildMessage}. Hi QC team, please help me test the android build :smile:."
+      msg = "*#{INFO}* has been deployed; _<#{releaseLasted}| Install link>_.\n_<#{refLink}|Firebase invite vinovator link>_ with \n```#{buildMessage}```\nHi, please help me test the android build :smile:."
       noti_slack({message: msg})
   end
 end

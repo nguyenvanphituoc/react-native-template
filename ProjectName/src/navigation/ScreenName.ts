@@ -1,8 +1,0 @@
-const SCREEN_NAME = {
-  SCREEN_001: 'SCREEN_001',
-  SCREEN_002: 'SCREEN_002',
-  SCREEN_003: 'SCREEN_003',
-  SCREEN_004: 'SCREEN_004',
-} as const;
-
-export default SCREEN_NAME;

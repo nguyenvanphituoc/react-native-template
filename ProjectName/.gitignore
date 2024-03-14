@@ -65,11 +65,11 @@ yarn-error.log
 # scripts report
 scripts/*.txt
 **/localization
-**/fonts/constant.ts
+**/font_constant.ts
 /android/app/src/main/assets/fonts
 
 #
-**/certs
+/certs
 
 # Jest
 #

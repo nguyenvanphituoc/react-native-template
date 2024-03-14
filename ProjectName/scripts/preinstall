@@ -1,44 +1,33 @@
 #!/bin/bash
 
-# check if init script exist then run it
-# code below:
-
 # setup environment
-if [[ "$OSTYPE" == "darwin"* ]]; then
-
+if [[ "$OSTYPE" == "linux-gnu"* || "$OSTYPE" == "darwin"* || "$(grep -i 'ubuntu' /etc/os-release)" ]]; then
+  # rbenv setup
+  if which rbenv > /dev/null; then 
+    eval "$(rbenv init -)"; 
+    rbenv install --skip-existing
+  fi
   # check ruby version
   # by get ruby version and matching with .ruby-version
   ruby_version=$(ruby -v | awk '{print $2}')
-  if [ -s ".ruby-version" ]; then
-    expected_version=$(cat .ruby-version)
-
-    if [[ $ruby_version == $expected_version* ]]; then
-      echo "Validation passed: ruby_version starts with the content of .ruby-version"
-    else 
-      # rbenv setup
-      if which rbenv > /dev/null; then 
-        eval "$(rbenv init -)"; 
-        rbenv install
-      else
-        #
-        echo "Ruby version mismatch. Expected $expected_version but found $ruby_version"
-        exit 1
-      fi
-    fi
-  fi
-  
+  echo "Validation ruby_version $ruby_version"
   # load bundle and setup cocoapod, firebase
-  gem install bundler
-  bundle check || bundle install
+
+  if [ "$IGNORE_BUNDLE" = "0" ] || [ "$IGNORE_BUNDLE" = "false" ] || [ -z "$IGNORE_BUNDLE" ]; then 
+    echo "Running bundle install"
+    gem install bundler
+    bundle check || bundle install
+  else
+    echo "Skipping bundle install"
+  fi
 
   # Load nvm if it is available
-  if [ -s "$HOME/.nvm/nvm.sh" ]; then
-    source "$HOME/.nvm/nvm.sh"
+  export NVM_DIR="$HOME/.nvm"
+  if [ -s "$NVM_DIR/nvm.sh" ]; then
+    . "$NVM_DIR/nvm.sh" --no-use
     # Switch to the Node.js version specified in .nvmrc
     # check .nvmrc exists
-    if [ -s ".nvmrc" ]; then
-      nvm use
-    fi
+    eval "[ -f .nvmrc ] && nvm install"
   fi
 else
   echo "Skipping npx pod-install as it is only required for macOS."

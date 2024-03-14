@@ -14,11 +14,6 @@ else
   echo "Skipping npx pod-install as it is only required for macOS."
 fi
 
-# Task 3: Run yarn copy-fonts
-echo "Running yarn copy-fonts..."
-yarn copy-fonts
-echo "Task 3 completed."
-
 # Task 3: Run yarn copy-language
 echo "Running yarn locale..."
 yarn locale
