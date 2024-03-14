@@ -21,8 +21,13 @@ lane :watch do
   sh("watchbuild -a #{ENV["APP_ID"]} -u #{ENV["APPLE_USER_NAME"]}")
 end
 
+# def get_build_message
+#   `cat ../package.json | grep message | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g'`.strip
+# end
 def get_build_message
-  `cat ../package.json | grep message | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g'`.strip
+  file = File.read('../package.json')
+  data = JSON.parse(file)
+  data['message'].strip
 end
 
 def print(variable)

@@ -1,6 +1,7 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
+  "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
+    "allowJs": true,
     "lib": [
       "es2017"
     ] /* Specify library files to be included in the compilation. */,
@@ -21,7 +22,7 @@
       "@theme/*": ["theme/*"],
       "@views/*": ["views/*"]
     } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
-    // React Native only: If your tsconfig assigns types then you will need to add "styled-components-react-native" there. For example:
-    "types": ["react-native", "jest", "styled-components-react-native"]
+    "types": ["react-native", "jest"],
+    "useDefineForClassFields": true
   }
 }

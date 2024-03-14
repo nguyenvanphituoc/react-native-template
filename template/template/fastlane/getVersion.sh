@@ -1,4 +1,5 @@
-#! /usr/bin/env bash -e
+#!/bin/sh
+
 PACKAGE_FILE="package.json"
 REACT_DIR="../${PACKAGE_FILE}"
 PACKAGE_VERSION=$(cat $REACT_DIR | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')

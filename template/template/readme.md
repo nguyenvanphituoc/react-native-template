@@ -1,12 +1,16 @@
-# ProjectName
+# sg.vinova.livein
 
 ## Tech Stack
 
 - typescript
 - yarn
-- React Native
-- styled-components
-- reduxjs/toolkit
+- React Native 0.73.6
+- UI:
+- State Management:
+- Networking: axios
+- Navigation/ Routing: @react-navigation
+- icon svg:
+- locale
 
 ## Architecture
 
@@ -15,7 +19,7 @@ The project follows a component-based architecture, with reusable components bei
 ```mermaid
 graph LR
     subgraph View
-        UI[UI Elements]
+        UI[MUI]
         S[Styling]
     end
 
@@ -24,8 +28,8 @@ graph LR
         AC[Action]
     end
 
-    subgraph Store
-        ST[Store]
+    subgraph State Management
+        MST[MST]
         R[Reducer]
     end
 
@@ -55,6 +59,23 @@ The following tools are used in the project:
 - Android Studio
 - Xcode
 - Git
+- svg transformer
+- CLI
+
+### Using icon svg transformer
+
+1. Setting transformer
+   - combine react-native-svg + react-native-svg-transformer
+   - add .svgrrc.json with rules
+     - stroke color placeholder is #000
+     - fill color placeholder is #000
+     - if ignore stroke/ fill color just let it none valuable
+   - for typescript add declaration type for svg
+2. Addition icon
+   - Put your svg file to assets/icons folder
+   - Check your svg file for stroke/ fill color to match with your svgrrc rules
+   - run command: npx yarn icon
+3. Usage
 
 ## Environment
 
@@ -85,7 +106,7 @@ The project follows the Git flow workflow, with feature branches being created o
 
 ## Build and Deploy
 
-### ProjectName build flavor and scheme
+### sg.vinova.livein build flavor and scheme
 
 - iOS:
 - android:
@@ -96,4 +117,9 @@ The project follows the Git flow workflow, with feature branches being created o
 
 ### Using fastlane
 
-[]
+- Always run with bundle exec fastlane
+- bundle exec fastlane lanes - to see available lane
+
+### Known Bugs and Future Fixes
+
+- [ ] MST uses unprotect tree because mobx persist store cannot run direct action from mobx

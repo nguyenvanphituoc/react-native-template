@@ -13,11 +13,8 @@
     "ios": "react-native run-ios",
     "start": "NODE_ENV=development react-native start",
     "test": "jest && node ./scripts/jest/coverage.mjs",
-    "locale": "node scripts/locale/generate-language.mjs",
-    "copy-fonts": "node scripts/font/copy-fonts.mjs",
     "clean": "./scripts/clean --keep-env",
-    "prepare": "husky",
-    "icon": "node ./scripts/icon/generate_icon_constant.mjs"
+    "prepare": "husky"
   },
   "dependencies": {
     "react": "18.2.0",

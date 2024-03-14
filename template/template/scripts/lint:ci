@@ -1,0 +1,79 @@
+#!/bin/bash
+# Function to check file extension
+check_extension() {
+  file="$1"
+  valid_extensions=("ts" "tsx" "js" "jsx" "mjs" "json" "md" "xml" "yaml")
+  
+  for ((i=0; i<${#valid_extensions[@]}; i++)); do
+  if [[ "${file##*.}" == "${valid_extensions[i]}" ]]; then
+    return 0  # Matched extension
+  fi
+  done
+  # for extension in "${valid_extensions[@]}"; do
+  #   if [[ "${file##*.}" == "$extension" ]]; then
+  #     return 0  # Matched extension
+  #   fi
+  # done
+
+  return 1  # Unmatched extension
+}
+
+if [ -z "$CI_COMMIT_SHA" ]; then
+  # STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMRTUXB)
+  STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR)
+else 
+  STAGED_FILES=$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMR $CI_COMMIT_SHA)
+fi
+
+if [[ "$STAGED_FILES" = "" ]]; then
+  exit 0
+fi
+
+PASS=true
+
+echo "\nValidating these file with linter:\n"
+echo $STAGED_FILES
+
+SHOULD_FIX=false
+if [ "$1" = "--fix" ]; then
+  echo "\nFixing files with linter:\n"
+  SHOULD_FIX=true
+fi
+
+for FILE in $STAGED_FILES
+do
+  # Call the check_extension function for each file
+  check_extension "$FILE"
+  if [[ $? -eq 0 ]]; then
+    if [ "$SHOULD_FIX" = true ]; then
+      ./node_modules/.bin/eslint --fix "$FILE" # --fix if you want to fix it
+    else
+      ./node_modules/.bin/eslint "$FILE" # --fix if you want to fix it
+    fi
+    ESLINT_RESULT=$?
+    if [ "$SHOULD_FIX" = true ]; then
+      ./node_modules/.bin/prettier --write --ignore-unknown "$FILE" # --write if you want to fix it
+    else
+      ./node_modules/.bin/prettier --ignore-unknown "$FILE" # --write if you want to fix it
+    fi
+    PRETTIER_RESULT=$?
+
+    if [[ "$ESLINT_RESULT" == 0 && "$PRETTIER_RESULT" == 0 ]]; then
+      git add $FILE
+    else
+      echo "\t\033[41mLinter Failed: $FILE\033[0m"
+      PASS=false
+    fi
+  fi
+done
+
+echo "\nJavascript validation completed!\n"
+
+if ! $PASS; then
+  echo "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass ESLint but do not. Please fix the ESLint errors and try again. Try using yarn lint\n"
+  exit 1
+else
+  echo "\033[42mCOMMIT SUCCEEDED\033[0m\n"
+fi
+
+exit $?

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -e
+#!/bin/sh
 # echo current working directory
 SET_VERSION_CODE=""
 
@@ -25,6 +25,13 @@ if [ $SET_VERSION_CODE -gt 0 ]; then
 
   # Output the updated package.json
   cat ../package.json
+fi
+####################
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "Running set version iOS..."
+else
+  echo "Skipping set version iOS as it is only required for macOS."
+  exit 0
 fi
 ####################
 echo "Current working directory: $(pwd)"
